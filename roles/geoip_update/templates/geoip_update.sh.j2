@@ -1,0 +1,24 @@
+#!/bin/bash
+/usr/bin/wget https://mailfud.org/geoip-legacy/GeoIP.dat.gz &&
+/usr/bin/gunzip GeoIP.dat.gz
+if [ $? -eq 0 ]; then
+    echo GeoIP.dat.gz unzipped
+else
+    echo unzipping failed; exit 0
+fi
+/usr/bin/wget https://mailfud.org/geoip-legacy/GeoIPCity.dat.gz &&
+/usr/bin/gunzip GeoIPCity.dat.gz
+if [ $? -eq 0 ]; then
+    echo GeoIPCity.dat.gz unzipped
+else
+    echo unzipping failed; exit 0
+fi
+/usr/bin/cp GeoIP.dat /usr/share/GeoIP/GeoLiteCountry.dat &&
+/usr/bin/cp GeoIPCity.dat /usr/share/GeoIP/GeoLiteCity.dat &&
+/usr/bin/rm GeoIP.dat &&
+/usr/bin/rm GeoIPCity.dat
+{% if nginx is defined %}
+{% if nginx=='true' %}
+systemctl reload nginx
+{% endif %}
+{% endif %}

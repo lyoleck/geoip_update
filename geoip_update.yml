@@ -1,0 +1,6 @@
+---
+- name: geoip update script
+  hosts: all
+  become: yes
+  roles:
+    - geoip_update

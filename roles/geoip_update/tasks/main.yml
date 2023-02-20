@@ -1,0 +1,15 @@
+---
+- name: forming geoip_update script
+  template:
+    src: templates/geoip_update.sh.j2
+    dest: /root/geoip_update.sh
+
+- name: check cron job
+  cron:
+    name: geoip autoupdate
+    weekday: '3'
+    minute: '5'
+    hour: '11'
+    user: root
+    job: "cd /root && /bin/bash /root/geoip_update.sh > /dev/null 2>&1"
+    cron_file: geoip_autoupdate
